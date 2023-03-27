@@ -1,32 +1,34 @@
 import './App.css';
-import { useRef } from 'react';
+import { useState, useEffect } from 'react';
 
-function App() {
-  const txtTitle = useRef();
-  const hexColor = useRef();
+const tahoe_peaks = [
+  { name: "Freel", elevation: 10891 },
+  { name: "Monument", elevation: 10067 },
+  { name: "Pyramid", elevation: 9983 },
+  { name: "Tallac", elevation: 9735 }
+]
 
-  const submit = (e) => {
-    e.preventDefault();
-    const title = txtTitle.current.value;
-    const color = hexColor.current.value;
-    alert(`${title}, ${color}`);
-    txtTitle.current.value="";
-    hexColor.current.value="";
-  };
-  return (
-    <form onSubmit={submit}>
-      <input 
-        ref={txtTitle}
-        type="text" 
-        placeholder="color title..."
-      />
-      <input 
-        ref={hexColor}
-        type="color" 
-      />
-      <button>ADD</button>
-    </form>
+function List({data, renderItem, renderEmpty}){
+  return !data.length ? ( 
+    renderEmpty 
+  ) : (
+    <ul>
+      {data.map((item) => (
+        <li key={item.name}>
+          {renderItem(item)}
+        </li>
+      ))}
+    </ul>
   );
+}
+function App() {
+  return (
+    <List 
+      data={tahoe_peaks} 
+      renderEmpty={<p>This list is empty</p>} 
+      renderItem={item => <>{item.name} {item.elevation} ft.</>}
+    />
+  )
 }
 
 export default App;
